@@ -1,7 +1,5 @@
 package com.rbleek.fluxflixservice;
 
-import com.mongodb.MongoClient;
-import cz.jirutka.spring.embedmongo.EmbeddedMongoFactoryBean;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,9 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.http.MediaType;
@@ -24,7 +20,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.Date;
 import java.util.Random;
@@ -159,15 +154,3 @@ class MovieEvent {
 	private String user;
 }
 
-@Configuration
-class MongoConfig {
-	private static final String MONGO_DB_URL = "localhost";
-	private static final String MONGO_DB_NAME = "embeded_db";
-	@Bean
-	public MongoTemplate mongoTemplate() throws IOException {
-		EmbeddedMongoFactoryBean mongo = new EmbeddedMongoFactoryBean();
-		mongo.setBindIp(MONGO_DB_URL);
-		MongoClient mongoClient = mongo.getObject();
-		return new MongoTemplate(mongoClient, MONGO_DB_NAME);
-	}
-}
